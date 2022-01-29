@@ -5,7 +5,7 @@ description = "Generate test cases for shell scripts"
 authors = ["Ben <bnichs55@gmail.com>"]
 readme = "README.md"
 license = "MIT"
-repository = ""
+repository = "https://github.com/bnichs/pyshelltest.git"
 keywords = ["generation", "test", "case",]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -17,7 +17,9 @@ classifiers = [
     "Topic :: Software Development :: Testing",
     "Topic :: System :: Shells"
 ]
-include = ["LICENSE",]
+include = [
+    "LICENSE",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
