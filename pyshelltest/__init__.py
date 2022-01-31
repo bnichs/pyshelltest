@@ -1,10 +1,16 @@
 import json
+import logging
 import os
+import sys
 from dataclasses import dataclass
 from pprint import pprint
-from subprocess import PIPE, Popen
+from pydoc import locate
+from subprocess import PIPE, Popen, CompletedProcess
 from typing import List
 from unittest import TestCase
+
+
+logger = logging.getLogger(__name__)
 
 
 DEFAULT_COMMAND_TIMEOUT = 20
@@ -20,19 +26,82 @@ class PyShellCommand(object):
     def from_d(cls, name: str, command: List[str], **d):
         return PyShellCommand(name, command, extra=d)
 
-    def gen_test(self):
-        def the_test(self_for_test):
-            process = Popen(self.command, stdout=PIPE, stderr=PIPE)
-            process.wait(timeout=self.timeout)
+    @property
+    def config(self):
+        return dict(name=self.name,
+                    command=self.command,
+                    **self.extra)
 
-            if self.print_output:
-                out = process.stdout.read().decode("utf-8")
-                print(out)
-            assert process.returncode == 0, process.stderr.read()
+    def check_returncode(self, process: Popen):
+        logger.debug("Got return code %d", process.returncode)
+        if process.returncode != self.expected_return_code:
+            logger.debug("Return code %d didn't match expected %d", process.returncode, self.expected_return_code)
+            assert False, f"Bad return code, expected 0 and got {process.returncode}."
+        else:
+            logger.debug("Return code matched expected %d", self.expected_return_code)
+            assert True, "Command ran successfully"
+
+    def check_output(self, process: Popen, stdout: str, stderr: str):
+        if self.stdout_contains is not None:
+            assert self.stdout_contains in stdout, f"Expected stdout to contain {self.stdout_contains}"
+
+        if self.stderr_contains is not None:
+            assert self.stderr_contains in stderr, f"Expected stderr to contain {self.stderr_contains}"
+
+    def gen_test(self):
+        logger.debug("Generating test with config: %s", self.config)
+        def the_test(self_for_test):
+            try:
+                process = Popen(self.command, stdout=PIPE, stderr=PIPE)
+                process.wait(timeout=self.timeout)
+
+                stdout, stderr = process.stdout.read(), process.stderr.read()
+                stdout, stderr = stdout.decode("utf-8"), stderr.decode("utf-8")
+
+                if self.print_output:
+                    out = process.stdout.read().decode("utf-8")
+                    print(out)
+
+                self.check_returncode(process)
+                self.check_output(process, stdout, stderr)
+
+                # assert process.returncode == 0, process.stderr.read()
+            except Exception as e:
+                # Naked so we can compare to possible self.error.error_class
+                logger.debug("Failed to run script")
+                if self.error and self.error_class:
+                    assert isinstance(e, self.error_class), f"Expected error class {self.error_class} but instead got {e.__class__}"
+                else:
+                    # Raise the caugh exception
+                    raise
         return the_test
 
     def get(self, name: str, default=None):
         return self.extra.get(name, default)
+
+    @property
+    def expected_return_code(self):
+        return self.error.get("returncode", 0)
+
+    @property
+    def stdout_contains(self):
+        return self.get("stdout_contains", None)
+
+    @property
+    def stderr_contains(self):
+        return self.get("stderr_contains", None)
+
+    @property
+    def error_class(self) -> type:
+        # If no class was specified just grab a generic exception since all should fall under that
+        class_name = self.error.get("error_class", "Exception")
+        logger.debug("Loading class %s", class_name)
+        kls = locate(class_name)
+        return kls
+
+    @property
+    def error(self):
+        return self.get("error", {})
 
     @property
     def timeout(self):
