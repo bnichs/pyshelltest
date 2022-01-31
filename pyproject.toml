@@ -24,6 +24,7 @@ include = [
 [tool.poetry.dependencies]
 python = "^3.7"
 pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
 
 [tool.poetry.dev-dependencies]
 
@@ -34,7 +35,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-ra -q"
+addopts = "-ra -q --cov=pyshelltest --cov-report html"
 log_level = "DEBUG"
 log_cli = true
 testpaths = [
