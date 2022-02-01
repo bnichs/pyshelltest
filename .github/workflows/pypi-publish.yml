@@ -27,11 +27,13 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
-      - name: Install versioning
+      - name: Update poetry
         run: |
-          ~/.local/share/pypoetry/venv/bin/pip install poetry-dynamic-versioning  
+          poetry self update 
+          poetry plugin add poetry-dynamic-versioning
+
+      #          ~/.local/share/pypoetry/venv/bin/pip install poetry-dynamic-versioning
 #          pip install poetry-dynamic-versioning
-#          poetry plugin add poetry-dynamic-versioning
 
       - name: Build
         run: |
