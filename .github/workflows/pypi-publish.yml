@@ -16,9 +16,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build and publish to pypi
-        uses: JRubics/poetry-publish@v1.10
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
         with:
-          pypi_token: ${{ secrets.TEST_PYPI_TOKEN }}
-          repository_name: "testpypi"
-          repository_url: "https://test.pypi.org/legacy/"
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install versioning
+        run: |
+          poetry plugin add poetry-dynamic-versioning
+
+      - name: Build
+        run: |
+          poetry build
+#          python -m pip install --upgrade pip
+#          pip install flake8 pytest
+#          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+#      - name: Build and publish to pypi
+#        uses: JRubics/poetry-publish@v1.10
+#        with:
+#          pypi_token: ${{ secrets.TEST_PYPI_TOKEN }}
+#          repository_name: "testpypi"
+#          repository_url: "https://test.pypi.org/legacy/"
