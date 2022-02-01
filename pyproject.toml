@@ -27,16 +27,20 @@ format = "0.1.{distance}.{commit}"
 #revision = 66
 vcs = "git"
 #style = "semver"
-#format-jinja = """
-#    {%- if distance == 0 -%}
-#        {{ serialize_pep440(base, stage, revision) }}
-#    {%- elif revision is not none -%}
-#        {{ serialize_pep440(base, stage, revision + 1, dev=distance, metadata=[commit]) }}
-#    {%- else -%}
+format-jinja = """
+    {%- set base = "0.1.0" -%}
+    {%- if distance == 0 -%}
+        {{ serialize_pep440(base, stage, revision) }}
+    {%- elif revision is not none -%}
+        {{ serialize_pep440(base, stage, revision + 1, dev=distance, metadata=[commit]) }}
+    {%- else -%}
+        {{ serialize_pep440(bump_version(base), stage, revision, dev=distance, metadata=[commit]) }}
+    {%- endif -%}
+"""
+
 #        {{ serialize_pep440(bump_version(base), stage, revision, dev=distance, metadata=[commit]) }}
-#    {%- endif -%}
 #"""
-#bump = true
+bump = false
 #format-jinja = "{% if distance == 0 %}{{ base }}{% else %}{{ base }}+{{ distance }}.{{ commit }}{% endif %}"
 #bump = true
 #vcs = "git"
