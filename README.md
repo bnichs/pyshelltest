@@ -28,7 +28,7 @@ python -m pytest tests/
 
 
 #  Configuration
-See sample-config.json as well as tests/test-config.json
+See `sample-config.json` as well as `tests/test-config.json`
 
 Example configuration for a command: 
 ```
