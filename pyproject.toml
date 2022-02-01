@@ -23,10 +23,10 @@ include = [
 
 [tool.poetry-dynamic-versioning]
 enable = true
-format = "0.1.{distance}+{commit}"
+format = "0.1.{distance}.{commit}"
 #revision = 66
 vcs = "git"
-style = "semver"
+#style = "semver"
 #format-jinja = """
 #    {%- if distance == 0 -%}
 #        {{ serialize_pep440(base, stage, revision) }}
