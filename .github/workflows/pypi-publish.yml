@@ -36,16 +36,16 @@ jobs:
       #          ~/.local/share/pypoetry/venv/bin/pip install poetry-dynamic-versioning
 #          pip install poetry-dynamic-versioning
 
-      - name: Build
-        run: |
-          poetry build
-#          python -m pip install --upgrade pip
-#          pip install flake8 pytest
-#          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+#      - name: Publish
+#        run: |
+#          poetry build
+##          python -m pip install --upgrade pip
+##          pip install flake8 pytest
+##          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-#      - name: Build and publish to pypi
-#        uses: JRubics/poetry-publish@v1.10
-#        with:
-#          pypi_token: ${{ secrets.TEST_PYPI_TOKEN }}
-#          repository_name: "testpypi"
-#          repository_url: "https://test.pypi.org/legacy/"
+      - name: Build and publish to pypi
+        uses: JRubics/poetry-publish@v1.10
+        with:
+          pypi_token: ${{ secrets.TEST_PYPI_TOKEN }}
+          repository_name: "testpypi"
+          repository_url: "https://test.pypi.org/legacy/"
