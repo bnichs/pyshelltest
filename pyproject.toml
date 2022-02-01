@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyshelltest"
-version = "0.1.0"
+version = "0.0.0"
 description = "Generate test cases for shell scripts"
 authors = ["Ben <bnichs55@gmail.com>"]
 readme = "README.md"
@@ -21,6 +21,27 @@ include = [
     "LICENSE",
 ]
 
+[tool.poetry-dynamic-versioning]
+enable = true
+format = "0.1.{distance}+{commit}"
+#revision = 66
+vcs = "git"
+style = "semver"
+#format-jinja = """
+#    {%- if distance == 0 -%}
+#        {{ serialize_pep440(base, stage, revision) }}
+#    {%- elif revision is not none -%}
+#        {{ serialize_pep440(base, stage, revision + 1, dev=distance, metadata=[commit]) }}
+#    {%- else -%}
+#        {{ serialize_pep440(bump_version(base), stage, revision, dev=distance, metadata=[commit]) }}
+#    {%- endif -%}
+#"""
+#bump = true
+#format-jinja = "{% if distance == 0 %}{{ base }}{% else %}{{ base }}+{{ distance }}.{{ commit }}{% endif %}"
+#bump = true
+#vcs = "git"
+#style = "semver"
+
 [tool.poetry.dependencies]
 python = "^3.7"
 pytest = "^6.2.5"
@@ -30,7 +51,7 @@ flake8 = "^4.0.1"
 [tool.poetry.dev-dependencies]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
 build-backend = "poetry.core.masonry.api"
 
 
