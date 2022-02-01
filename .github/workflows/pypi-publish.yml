@@ -29,16 +29,19 @@ jobs:
           path: .venv
           key: "venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}"
 
-      - name: Add poetry plugins
+      - name: Configure poetry
         run: |
           poetry plugin add poetry-dynamic-versioning
+          poetry config repositories.testpypi https://test.pypi.org/legacy/
+          poetry config pypi-token.testpypi ${{ secrets.TEST_PYPI_TOKEN }}
+
       #          poetry self update
       #          ~/.local/share/pypoetry/venv/bin/pip install poetry-dynamic-versioning
 #          pip install poetry-dynamic-versioning
 
       - name: Publish
         run: |
-          poetry publish -r testpypi
+          poetry publish -r testpypi --build
 #          python -m pip install --upgrade pip
 #          pip install flake8 pytest
 #          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
