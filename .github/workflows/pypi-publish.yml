@@ -1,0 +1,24 @@
+name: Publish Python package
+on:
+  workflow_run:
+    workflows: [ "Py-Build" ]
+    branches: [ master ]
+    types:
+      - completed
+  release:
+    types: [published]
+#on:
+#  push:
+#    tags:
+#      - "v*.*.*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and publish to pypi
+        uses: JRubics/poetry-publish@v1.10
+        with:
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          repository_name: "testpypi"
+          repository_url: "https://test.pypi.org/legacy/"
