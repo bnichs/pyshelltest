@@ -29,7 +29,8 @@ jobs:
 
       - name: Install versioning
         run: |
-          pip install poetry-dynamic-versioning
+          ~/.local/share/pypoetry/venv/bin/pip install poetry-dynamic-versioning  
+#          pip install poetry-dynamic-versioning
 #          poetry plugin add poetry-dynamic-versioning
 
       - name: Build
