@@ -1,0 +1,12 @@
+
+
+{
+  "commands": [
+    {
+      "name": "linkchecker",
+      "command": ["linkchecker", "http://127.0.0.1:8000"],
+      "timeout": 30,
+      "print_output": true
+    }
+  ]
+}
