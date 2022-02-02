@@ -18,6 +18,13 @@ logger = logging.getLogger(__name__)
 DEFAULT_COMMAND_TIMEOUT = 20
 
 
+class ExceptionForTesting(Exception):
+    """A custom exception class used for unit tests of this module, should never be raised otherwise"""
+    pass
+    # def __init__(self):
+    #     super().__init__("fooooo")
+
+
 @dataclass
 class PyShellCommand(object):
     name: str
@@ -67,19 +74,24 @@ class PyShellCommand(object):
                 self.check_returncode(process)
                 self.check_output(process, stdout, stderr)
 
-                # assert process.returncode == 0, process.stderr.read()
+                if self.raise_exception_for_testing:
+                    raise ExceptionForTesting()
             except Exception as e:
                 # Naked so we can compare to possible self.error.error_class
-                logger.debug("Failed to run script")
+                logger.debug("Failed to run script, got %s", e.__class__)
                 if self.error and self.error_class:
                     assert isinstance(e, self.error_class), f"Expected error class {self.error_class} but instead got {e.__class__}"
                 else:
-                    # Raise the caugh exception
+                    # Raise the caught exception
                     raise
         return the_test
 
     def get(self, name: str, default=None):
         return self.extra.get(name, default)
+
+    @property
+    def raise_exception_for_testing(self):
+        return self.extra.get("_raise_testing_exception", False)
 
     @property
     def expected_return_code(self):
@@ -99,6 +111,9 @@ class PyShellCommand(object):
         class_name = self.error.get("error_class", "Exception")
         logger.debug("Loading class %s", class_name)
         kls = locate(class_name)
+
+        if kls is None:
+            raise ValueError(f"Couldn't load class {class_name}")
         return kls
 
     @property
