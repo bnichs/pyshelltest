@@ -40,7 +40,8 @@ jobs:
           poetry config pypi-token.testpypi ${{ secrets.TEST_PYPI_TOKEN }}
           poetry config repositories.pypi https://pypi.python.org/pypi
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry config --list
 
       - name: Publish
         run: |
-          poetry publish -r pypi --build
+          poetry publish -r pypi --build -vvv
