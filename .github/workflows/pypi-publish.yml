@@ -38,7 +38,7 @@ jobs:
           poetry plugin add poetry-dynamic-versioning
           poetry config repositories.testpypi https://test.pypi.org/legacy/
           poetry config pypi-token.testpypi ${{ secrets.TEST_PYPI_TOKEN }}
-          poetry config repositories.pypi https://pypi.org/legacy/
+          poetry config repositories.pypi https://pypi.python.org/pypi
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish
