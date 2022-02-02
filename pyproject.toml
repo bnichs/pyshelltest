@@ -23,7 +23,7 @@ include = [
 
 [tool.poetry-dynamic-versioning]
 enable = true
-format = "0.1.{distance}"
+#format = "0.1.{distance}"
 #revision = 66
 vcs = "git"
 #style = "semver"
