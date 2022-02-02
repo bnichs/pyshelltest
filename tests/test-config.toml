@@ -1,0 +1,72 @@
+
+[[command]]
+name = "failing-script"
+command = [ "tests/bin/failing-script.sh",]
+timeout = 30
+print_output = true
+    [command.error]
+    expect = true
+
+[[command]]
+name = "failing-script-good-code"
+command = [ "tests/bin/failing-script.sh",]
+timeout = 30
+print_output = true
+    [command.error]
+    returncode = 42
+
+[[command]]
+name = "failing-script-bad-code"
+command = [ "tests/bin/failing-script.sh",]
+timeout = 30
+print_output = true
+    [command.error]
+    returncode = 555
+    expect = true
+
+[[command]]
+name = "succeeding-script"
+command = [ "tests/bin/succeeding-script.sh",]
+timeout = 30
+print_output = true
+
+[[command]]
+name = "stderr-script"
+command = [ "tests/bin/stderr-script.sh",]
+timeout = 30
+print_output = true
+stderr_contains = "stderr-wafflez_for_lifez"
+
+[[command]]
+name = "stdout-script"
+command = [ "tests/bin/stdout-script.sh",]
+timeout = 30
+print_output = true
+stdout_contains = "stdout-wafflez_for_lifez"
+
+[[command]]
+name = "stdout-script-no-match"
+command = [ "tests/bin/stdout-script.sh",]
+timeout = 30
+print_output = true
+stdout_contains = "not in the script"
+    [command.error]
+    error_class = "AssertionError"
+
+[[command]]
+name = "internal-exception-raised"
+command = [ "tests/bin/stdout-script.sh",]
+timeout = 30
+print_output = true
+_raise_testing_exception = true
+    [command.error]
+    error_class = "pyshelltest.ExceptionForTesting"
+
+[[command]]
+name = "nonexistent-script"
+command = [ "tests/bin/footothebar-script.sh",]
+timeout = 30
+print_output = true
+    [command.error]
+    expect = true
+    error_class = "FileNotFoundError"

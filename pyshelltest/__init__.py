@@ -3,12 +3,14 @@ import logging
 import os
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 from pprint import pprint
 from pydoc import locate
 from subprocess import PIPE, Popen, CompletedProcess
-from typing import List
+from typing import List, Union
 from unittest import TestCase
 
+import toml
 
 logger = logging.getLogger(__name__)
 
@@ -121,15 +123,28 @@ class PyShellTestGenerator(object):
     commands: List[PyShellCommand]
 
     @classmethod
-    def from_json(cls, path: str) -> "PyShellTestGenerator":
+    def from_toml(cls, path: Union[str, Path]) -> "PyShellTestGenerator":
+        if not os.path.exists(path):
+            raise FileNotFoundError(path)
+        with open(path) as f:
+            settings = toml.load(f)
+
+        return cls.from_d(settings)
+
+    @classmethod
+    def from_json(cls, path: Union[str, Path]) -> "PyShellTestGenerator":
         if not os.path.exists(path):
             raise FileNotFoundError(path)
         with open(path) as f:
             settings = json.load(f)
 
+        return cls.from_d(settings)
+
+    @classmethod
+    def from_d(cls, settings: dict):
         comms = []
-        for name, d in settings.items():
-            com = PyShellCommand.from_d(name, **d)
+        for d in settings['command']:
+            com = PyShellCommand.from_d(**d)
             comms.append(com)
 
         return PyShellTestGenerator(comms)

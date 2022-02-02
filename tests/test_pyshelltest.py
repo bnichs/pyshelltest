@@ -1,5 +1,13 @@
+import logging
+
 from pyshelltest import PyShellTestGenerator
+from tests.config import CONFIG_FILE
+
+logger = logging.getLogger(__name__)
 
 
-generator = PyShellTestGenerator.from_json("tests/test-config.json")
+
+# Generate our shell tests like a consumer would
+generator = PyShellTestGenerator.from_toml(CONFIG_FILE)
 test_class = generator.generate()
+
