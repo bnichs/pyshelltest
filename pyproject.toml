@@ -43,6 +43,7 @@ python = "^3.7"
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
 flake8 = "^4.0.1"
+attrs = "19.2.0"
 
 [tool.poetry.dev-dependencies]
 
