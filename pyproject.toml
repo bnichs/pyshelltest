@@ -43,7 +43,6 @@ vcs = "git"
 bump = false
 #format-jinja = "{% if distance == 0 %}{{ base }}{% else %}{{ base }}+{{ distance }}.{{ commit }}{% endif %}"
 #bump = true
-#vcs = "git"
 #style = "semver"
 
 [tool.poetry.dependencies]
