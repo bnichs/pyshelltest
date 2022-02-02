@@ -28,7 +28,6 @@ enable = true
 vcs = "git"
 #style = "semver"
 #format-jinja = """
-#    {%- set base = "0.1.0" -%}
 #    {%- if distance == 0 -%}
 #        {{ serialize_pep440(base, stage, revision) }}
 #    {%- elif revision is not none -%}
@@ -37,6 +36,8 @@ vcs = "git"
 #        {{ serialize_pep440(bump_version(base), stage, revision, dev=distance, metadata=[commit]) }}
 #    {%- endif -%}
 #"""
+tagged-metadata = true
+metadata = false
 
 #        {{ serialize_pep440(bump_version(base), stage, revision, dev=distance, metadata=[commit]) }}
 #"""
