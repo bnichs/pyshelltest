@@ -43,7 +43,6 @@ metadata = false
 #"""
 bump = false
 #format-jinja = "{% if distance == 0 %}{{ base }}{% else %}{{ base }}+{{ distance }}.{{ commit }}{% endif %}"
-#bump = true
 #style = "semver"
 
 [tool.poetry.dependencies]
