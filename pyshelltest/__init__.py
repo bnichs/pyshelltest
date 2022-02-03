@@ -68,8 +68,8 @@ class PyShellCommand(object):
                 stdout, stderr = stdout.decode("utf-8"), stderr.decode("utf-8")
 
                 if self.print_output:
-                    out = process.stdout.read().decode("utf-8")
-                    print(out)
+                    print(f"Stdout:\n{stdout}")
+                    print(f"Stderr:\n{stderr}")
 
                 self.check_returncode(process)
                 self.check_output(process, stdout, stderr)
