@@ -19,6 +19,7 @@ pip install pyshelltest
 Add this to you test files where you see fit: 
 ```python 
 generator = PyShellTestGenerator.from_json("sample-config.json")
+generator = PyShellTestGenerator.from_toml("sample-config.toml")
 test_class = generator.generate()
 ```
 
