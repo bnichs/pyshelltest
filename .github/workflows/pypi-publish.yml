@@ -5,8 +5,14 @@ on:
     branches: [ master ]
     types:
       - completed
+    tags:
+      - "v*.*"
   release:
     types: [published]
+#  push:
+#    branches: [ master ]
+#    tags:
+#      - "v*.*"
 
 
 jobs:
