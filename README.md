@@ -11,7 +11,9 @@ For instance:
 
 
 # Installation
-TODO
+```bash
+pip install pyshelltest
+```
 
 # Integration
 Add this to you test files where you see fit: 
@@ -26,38 +28,74 @@ python -m pytest tests/
 ```
 
 
-
 #  Configuration
-See `sample-config.json` as well as `tests/test-config.json`
+See `sample-config/` as well as `tests/test-config.toml`
 
-Example configuration for a command: 
+## Toml config
+Example configuration for a command:
+```toml
+[[command]]
+ name = "the-command-name"
+
+# The command to run
+command = ["path/to/script.sh"]
+
+# How long to wait before timing out
+timeout = 30
+
+# Print the output of the ocmmand to stdout
+print_output = true
+
+# Expect this in stdout, fail otherwise
+stdout_contains = "bar" 
+  
+# Expect this in stderr, fail otherwise
+stderr_contains = "bar"
+
+    # Set this dict if you expect errors from the command
+    [command.error] 
+    # Expect an error
+    expect = true
+    
+    # Expect an error with this class
+    error_class = "FileNotFoundError"
 ```
+
+
+## Json config
+Example configuration for a command: 
+```json
 {
-    "the-command-name": {
-        # The command to run
-        "command": ["path/to/script.sh"], 
-        
-        # How long to wait before timing out
-        "timeout": 30, 
-        
-        # Print the output of the ocmmand to stdout
-        "print_output": true,
-        
-        # Expect this in stdout, fail otherwise
-        "stdout_contains": "bar" 
-          
-        # Expect this in stderr, fail otherwise
-        "stderr_contains": "bar"
-        
-        # Set this dict if you expect errors from the command
-        "error": { 
-            # Expect an error
-            "expect": true, 
+    "command": [
+         {
+            "_comment":  "# The command name",
+            "name": "the-command-name",
             
-            # Expect an error with this class
-            "error_class": "FileNotFoundError"
-        },
-    }
+            "_comment":  "# The command to run",
+            "command": ["path/to/script.sh"], 
+            
+            "_comment":  "# How long to wait before timing out",
+            "timeout": 30, 
+            
+            "_comment":  "# Print the output of the command to stdout",
+            "print_output": true,
+            
+            "_comment":  "# Expect this in stdout, fail otherwise",
+            "stdout_contains": "bar" ,
+              
+            "_comment":  "# Expect this in stderr, fail otherwise",
+            "stderr_contains": "bar",
+            
+            "_comment":  "# Set this dict if you expect errors from the command",
+            "error": { 
+                "_comment":  "# Expect an error",
+                "expect": true,
+                
+                "_comment":  "# Expect an error with this class",
+                "error_class": "FileNotFoundError"
+            }
+        }
+    ]
 }
 ```
 
