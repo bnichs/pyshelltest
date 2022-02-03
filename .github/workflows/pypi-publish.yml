@@ -7,9 +7,6 @@ on:
       - completed
   release:
     types: [published]
-  push:
-    tags:
-      - "v*.*.*"
 
 
 jobs:
